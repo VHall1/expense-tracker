@@ -1,0 +1,23 @@
+<%= form_for([@account.becomes(Account)]) do |f| %>
+  <% if account.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(account.errors.count, "error") %> prohibited this account from being saved:</h2>
+
+      <ul>
+        <% account.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+
+  <%= f.label :type %>
+  <%= f.select :type, options_for_select(Account::CHOICES, select: @account&.type), { include_blank: true } %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
