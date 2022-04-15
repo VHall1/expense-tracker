@@ -31,6 +31,8 @@ class AccountsController < ApplicationController
 
     @account = Account.new(account_params)
     @account.user = current_user
+    # TODO: Make this an initial transaction?
+    @account.balance = params[:initial_balance]&.to_f || 0.0
 
     respond_to do |format|
       if @account.save
@@ -75,8 +77,7 @@ class AccountsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def account_params
       params.fetch(:account, {}).permit \
-        :name,
-        :type,
-        :balance
+      :name,
+      :type
     end
 end

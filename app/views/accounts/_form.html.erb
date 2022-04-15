@@ -14,6 +14,9 @@
   <%= f.label :name %>
   <%= f.text_field :name %>
 
+  <%= label_tag :initial_balance %>
+  <%= number_field_tag :initial_balance %>
+
   <%= f.label :type %>
   <%= f.select :type, options_for_select(Account::CHOICES, select: @account&.type), { include_blank: true } %>
 
