@@ -1,12 +1,12 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: %i[ show edit update destroy ]
 
-  # GET /accounts or /accounts.json
+  # GET /accounts
   def index
     @accounts = current_user.accounts
   end
 
-  # GET /accounts/1 or /accounts/1.json
+  # GET /accounts/1
   def show
   end
 
@@ -19,7 +19,7 @@ class AccountsController < ApplicationController
   def edit
   end
 
-  # POST /accounts or /accounts.json
+  # POST /accounts
   def create
     # Only allow a list of trusted account types through.
     choices = Account::CHOICES.map { |_, account_type| account_type }
@@ -45,7 +45,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /accounts/1 or /accounts/1.json
+  # PATCH/PUT /accounts/1
   def update
     respond_to do |format|
       if @account.update(account_params)
@@ -58,7 +58,7 @@ class AccountsController < ApplicationController
     end
   end
 
-  # DELETE /accounts/1 or /accounts/1.json
+  # DELETE /accounts/1
   def destroy
     @account.destroy
 
@@ -69,7 +69,6 @@ class AccountsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
     def set_account
       @account = Account.find(params[:id])
     end

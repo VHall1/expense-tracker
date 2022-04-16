@@ -1,0 +1,29 @@
+<% alert_danger = flash[:alert] || flash[:danger] %>
+<% if alert_danger.present? %>
+  <div class='alert alert-danger'>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= alert_danger %>
+  </div>
+<% end %>
+
+<% if flash[:warning].present? %>
+  <div class='alert alert-warning'>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= flash[:warning] %>
+  </div>
+<% end %>
+
+<% if flash[:success].present? %>
+  <div class='alert alert-success'>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= flash[:success] %>
+  </div>
+<% end %>
+
+<% notice_info = flash[:notice] || flash[:info] %>
+<% if notice_info.present? %>
+  <div class='alert alert-info'>
+    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <%= notice_info %>
+  </div>
+<% end %>

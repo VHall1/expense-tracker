@@ -1,0 +1,16 @@
+<%= form_tag login_path, method: :post do %>
+  <h1>Login</h1>
+
+  <div class="form-group">
+    <%= label_tag :email %>
+    <%= text_field_tag :email,
+      params[:email],
+      class: 'form-control',
+      placeholder: 'test@example.com',
+      type: 'email',
+      required: true
+    %>
+  </div>
+
+  <%= submit_tag 'Login', class: 'btn btn-primary' %>
+<% end %>

@@ -1,5 +1,38 @@
-<h1>New User</h1>
+<% content_for :title, "Create New Account" %>
 
-<%= render 'form', user: @user %>
+<%= form_for(@user) do |f| %>
+  <h1>Register</h1>
 
-<%= link_to 'Back', users_path %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+      <ul>
+        <% @user.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.text_field :email, {
+      class: 'form-control',
+      placeholder: 'test@example.com',
+      type: 'email',
+      required: true
+    } %>
+    <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="user_name">Username</label>
+    <%= f.text_field :name, {
+      class: 'form-control',
+      required: true
+    } %>
+  </div>
+
+  <%= f.submit 'Register', class: 'btn btn-primary' %>
+<% end %>

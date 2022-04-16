@@ -1,21 +1,25 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
 
-  # GET /users or /users.json
-  def index
-    @users = User.all
-  end
-
-  # GET /users/1 or /users/1.json
   def show
   end
 
-  # GET /users/new
+  def login
+    @user = User.find_by(email: params[:email])
+    # TODO: Actually authenticate user
+    if @user
+      session[:user_id] = @user.id
+      redirect_to accounts_url, notice: "Logged in!"
+    else
+      flash.now[:alert] = "Invalid email"
+      render :login
+    end
+  end
+
   def new
     @user = User.new
   end
 
-  # GET /users/1/edit
   def edit
   end
 
@@ -25,7 +29,8 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to user_url(@user), notice: "User was successfully created." }
+        session[:user_id] = @user.id
+        format.html { redirect_to accounts_url, notice: "User was successfully created." }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -34,7 +39,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /users/1 or /users/1.json
   def update
     respond_to do |format|
       if @user.update(user_params)
@@ -47,7 +51,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # DELETE /users/1 or /users/1.json
   def destroy
     @user.destroy
 
@@ -65,6 +68,8 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.fetch(:user, {})
+      params.require(:user).permit \
+        :name,
+        :email
     end
 end
