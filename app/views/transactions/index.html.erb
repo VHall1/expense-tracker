@@ -1,0 +1,69 @@
+<%= render "layouts/container" do %>
+  <nav aria-label="breadcrumb" class="mt-2">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">
+        Transactions
+      </li>
+    </ol>
+  </nav>
+
+  <p id="notice"><%= notice %></p>
+
+  <div class="input-group mb-3">
+    <%= date_select("transaction", "bank_created_at", discard_day: true) %>
+    <input class="btn btn-primary ml-2" type="submit" value="Submit">
+
+    <%= link_to 'New Transaction', new_transaction_path, class: 'btn btn-outline-primary ml-auto' %>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      Month Overview
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        <strong>Income:</strong>
+        ￡<%= get_income_for_month(Date.today) %>
+      </p>
+      <p class="card-text">
+        <strong>Expenses:</strong>
+        ￡<%= get_expenses_for_month(Date.today) %>
+      </p>
+      <p class="card-text">
+        <strong>Diff:</strong>
+        ￡<%= get_diff_for_month(Date.today) %>
+      </p>
+    </div>
+  </div>
+
+  <div class="card mt-4">
+    <div class="card-header">
+      Category Breakdown
+    </div>
+    <div class="card-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Category</th>
+            <th scope="col">
+              <%= Date.today.strftime("%B-%Y") %>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% list_transactions_per_category_for_month(Date.today).each do |category| %>
+            <tr>
+              <th scope="row">
+                <%= category[0] %>
+              </th>
+              <td>
+                ￡<%= category[1] %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+<% end %>
