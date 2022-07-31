@@ -1,5 +1,5 @@
 class WebhooksController < ApplicationController
-  def starling_feed_item(params)
-    CreateTransaction.process_async(params.to_h)
+  def starling_feed_item
+    CreateTransaction.process_async(params)
   end
 end

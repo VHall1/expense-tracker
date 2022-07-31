@@ -5,10 +5,10 @@ def CreateTransaction
     title, category, value, created_at = params[:]
 
     transaction = Transaction.new(
-      title: title,
-      category: category,
-      value: value,
-      created_at: created_at
+      title: params[:reference],
+      category: params[:spendingCategory],
+      value: params[:amount][:minorUnits] * 100.0,
+      created_at: params[:eventTimestamp]
     )
 
     if transaction.save

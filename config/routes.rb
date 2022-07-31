@@ -3,5 +3,7 @@ Rails.application.routes.draw do
 
   resources :transactions
 
+  post '/webhooks/starling/feed-item' => 'webhooks#starling_feed_item'
+
   root 'transactions#index'
 end
