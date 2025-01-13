@@ -12,24 +12,24 @@ const LEDGER_SERVICE_URL = "http://localhost:8001";
 type HTTPMethods = "GET" | "POST";
 
 function makeRequest(path: string, method: HTTPMethods) {
-  return fetch(`${LEDGER_SERVICE_URL}${path}`, { method });
+  return fetch(`${LEDGER_SERVICE_URL}${path}`, { method, cache: "no-cache" });
 }
 
 async function getTransactions(): Promise<Transaction[]> {
   const response = await makeRequest("/transactions", "GET");
 
   type JSONResponse = {
-    data?: Transaction[];
+    transactions?: Transaction[];
     error?: string;
   };
-  const { data, error }: JSONResponse = await response.json();
+  const { transactions, error }: JSONResponse = await response.json();
 
   if (!response.ok) {
     return Promise.reject(new Error(error ?? "unhandled api error"));
   }
 
   // return an empty array in the unlikely case the api returns a nullish value
-  return data ?? [];
+  return transactions ?? [];
 }
 
 export { getTransactions };

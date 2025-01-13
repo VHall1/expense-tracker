@@ -5,12 +5,12 @@ class TransactionsController < ApplicationController
   def index
     @transactions = Transaction.all
 
-    render json: @transactions
+    render json: { transactions: @transactions }
   end
 
   # GET /transactions/1
   def show
-    render json: @transaction
+    render json: { transaction: @transaction }
   end
 
   # POST /transactions
@@ -18,18 +18,18 @@ class TransactionsController < ApplicationController
     @transaction = Transaction.new(transaction_params)
 
     if @transaction.save
-      render json: @transaction, status: :created, location: @transaction
+      render json: { transaction: @transaction }, status: :created
     else
-      render json: @transaction.errors, status: :unprocessable_entity
+      render json: { errors: @transaction.errors }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /transactions/1
   def update
     if @transaction.update(transaction_params)
-      render json: @transaction
+      render json: { transaction: @transaction }
     else
-      render json: @transaction.errors, status: :unprocessable_entity
+      render json: { errors: @transaction.errors }, status: :unprocessable_entity
     end
   end
 
