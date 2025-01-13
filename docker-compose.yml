@@ -1,5 +1,4 @@
 name: expense-tracker
-version: '3.9'
 
 services:
   # TODO: each service might want to have its own database?
