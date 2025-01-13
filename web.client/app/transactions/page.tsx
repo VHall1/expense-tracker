@@ -1,8 +1,7 @@
-import { getTransactions, Transaction } from "@/lib/ledger";
+import { getTransactions } from "@/lib/ledger-service";
 
 export default async function Transactions() {
-  const transactionsResponse = await getTransactions();
-  const transactions: Transaction[] = await transactionsResponse.json();
+  const transactions = await getTransactions();
 
   return transactions.map((transaction) => (
     <div key={transaction.id}>{transaction.description}</div>
