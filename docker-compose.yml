@@ -1,0 +1,25 @@
+name: expense-tracker
+version: '3.9'
+
+services:
+  # TODO: each service might want to have its own database?
+  postgres:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    environment:
+      - POSTGRES_PASSWORD=pw
+
+  service.auth:
+    build:
+      context: ./service.auth
+      dockerfile: Dockerfile
+    volumes:
+      - ./service.auth:/docker/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST="postgres"
+      - DB_USERNAME="postgres"
+      - DB_PASSWORD="pw"
+      - PORT=8000
