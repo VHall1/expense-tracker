@@ -10,6 +10,8 @@ services:
       - POSTGRES_PASSWORD=pw
 
   service.auth:
+    depends_on:
+      - postgres
     build:
       context: ./service.auth
       dockerfile: Dockerfile
@@ -22,3 +24,19 @@ services:
       - DB_USERNAME="postgres"
       - DB_PASSWORD="pw"
       - PORT=8000
+
+  service.ledger:
+    depends_on:
+      - postgres
+    build:
+      context: ./service.ledger
+      dockerfile: Dockerfile
+    volumes:
+      - ./service.ledger:/docker/app
+    ports:
+      - "8001:8001"
+    environment:
+      - DB_HOST="postgres"
+      - DB_USERNAME="postgres"
+      - DB_PASSWORD="pw"
+      - PORT=8001
