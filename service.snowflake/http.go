@@ -1,17 +1,14 @@
 package main
 
 import (
-	"bytes"
-	"encoding/base64"
-	"encoding/binary"
-	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/vhall1/expense-tracker/service.snowflake/config"
 )
 
 type Server struct {
-	listenAddr      string
-	SnoflakeService *Snowflake
+	listenAddr string
 }
 
 func NewServer(listenAddr string) *Server {
@@ -23,24 +20,10 @@ func NewServer(listenAddr string) *Server {
 func (s *Server) ListenAndServe() error {
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /id", handleGetID(s.SnoflakeService))
+	if err := config.RegisterRoutes(mux); err != nil {
+		return err
+	}
 
-	log.Printf("[service.idgen] listening for requests on port %s", s.listenAddr)
+	log.Printf("[service.snowflake] listening for requests on port %s", s.listenAddr)
 	return http.ListenAndServe(s.listenAddr, mux)
-}
-
-func handleGetID(s *Snowflake) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := s.GenerateID()
-
-		// Create a byte buffer to store the binary representation
-		var buf bytes.Buffer
-		// Write the int64 into the buffer in big-endian byte order
-		err := binary.Write(&buf, binary.BigEndian, id)
-		if err != nil {
-			fmt.Println("Error writing int64 to buffer:", err)
-		}
-
-		fmt.Fprint(w, base64.StdEncoding.EncodeToString(buf.Bytes()))
-	})
 }
