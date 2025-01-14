@@ -16,6 +16,10 @@ const (
 	maxSequence    int64 = -1 ^ (-1 << sequenceBits)
 )
 
+type IDGenerator interface {
+	GenerateID() int64
+}
+
 type Snowflake struct {
 	mu        sync.Mutex
 	machineID int64

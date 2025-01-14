@@ -11,16 +11,16 @@ import (
 )
 
 type SnowflakeHandler struct {
-	SnowflakeService *lib.Snowflake
+	SnowflakeService lib.IDGenerator
 }
 
-func NewSnowflakeHandler(snowflakeService *lib.Snowflake) *SnowflakeHandler {
+func NewSnowflakeHandler(snowflakeService lib.IDGenerator) *SnowflakeHandler {
 	return &SnowflakeHandler{
 		SnowflakeService: snowflakeService,
 	}
 }
 
-func (h *SnowflakeHandler) HandleGenSnowflake() http.Handler {
+func (h *SnowflakeHandler) GenerateID() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := h.SnowflakeService.GenerateID()
 

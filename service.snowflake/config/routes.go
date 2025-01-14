@@ -15,7 +15,7 @@ func RegisterRoutes(mux *http.ServeMux) error {
 		return err
 	}
 
-	mux.Handle("GET /snowflake", snowflakeHandler.HandleGenSnowflake())
+	mux.Handle("GET /snowflake", snowflakeHandler.GenerateID())
 
 	return nil
 }
