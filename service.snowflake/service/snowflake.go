@@ -1,6 +1,7 @@
-package lib
+package service
 
 import (
+	"context"
 	"fmt"
 	"sync"
 	"time"
@@ -16,30 +17,26 @@ const (
 	maxSequence    int64 = -1 ^ (-1 << sequenceBits)
 )
 
-type IDGenerator interface {
-	GenerateID() int64
-}
-
-type Snowflake struct {
+type SnowflakeService struct {
 	mu        sync.Mutex
 	machineID int64
 	lastTime  int64
 	sequence  int64
 }
 
-func NewSnowflake(machineID int64) (*Snowflake, error) {
+func NewSnowflakeService(machineID int64) (*SnowflakeService, error) {
 	if machineID < 0 || machineID > maxMachineID {
 		return nil, fmt.Errorf("machine ID must be between 0 and %d", maxMachineID)
 	}
 
-	return &Snowflake{
+	return &SnowflakeService{
 		machineID: machineID,
 		lastTime:  -1,
 		sequence:  0,
 	}, nil
 }
 
-func (s *Snowflake) GenerateID() int64 {
+func (s *SnowflakeService) GenerateID(ctx context.Context) int64 {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

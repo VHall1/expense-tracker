@@ -4,26 +4,29 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/vhall1/expense-tracker/service.snowflake/config"
+	handler "github.com/vhall1/expense-tracker/service.snowflake/handler/snowflake"
+	"github.com/vhall1/expense-tracker/service.snowflake/service"
 )
 
-type Server struct {
-	listenAddr string
+type httpServer struct {
+	addr string
 }
 
-func NewServer(listenAddr string) *Server {
-	return &Server{
-		listenAddr: listenAddr,
-	}
+func NewHttpServer(addr string) *httpServer {
+	return &httpServer{addr: addr}
 }
 
-func (s *Server) ListenAndServe() error {
-	mux := http.NewServeMux()
+func (s *httpServer) Run() error {
+	router := http.NewServeMux()
 
-	if err := config.RegisterRoutes(mux); err != nil {
+	snowflakeService, err := service.NewSnowflakeService(int64(0))
+	if err != nil {
 		return err
 	}
 
-	log.Printf("[service.snowflake] listening for requests on port %s", s.listenAddr)
-	return http.ListenAndServe(s.listenAddr, mux)
+	snowflakeHandler := handler.NewHttpSnowflakeService(snowflakeService)
+	snowflakeHandler.RegisterRoutes(router)
+
+	log.Println("[service.snowflake] Starting http server on", s.addr)
+	return http.ListenAndServe(s.addr, router)
 }
