@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option go_package = "github.com/vhall1/common/snowflake";
+
+import "google/protobuf/empty.proto";
+
+service SnowflakeService {
+  rpc GenerateID(google.protobuf.Empty) returns (GenerateIDResponse) {}
+}
+
+message GenerateIDResponse {
+  string id = 1;
+}
