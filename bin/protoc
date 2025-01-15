@@ -6,7 +6,7 @@ files=$(find . -type d -name "service.*" -exec find {} -type f -name "*.proto" \
 for f in $files; do
   dir=$(dirname "$f")
   package_name=$(basename "$dir" | sed 's/^service\.//')
-  out_path="common/genproto/$package_name"
+  out_path="common/grpc/$package_name"
 
   mkdir -p "$out_path"
 
